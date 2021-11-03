@@ -101,7 +101,7 @@ final class Network: NetworkProtocol {
 extension UIImageView {
     func load(link: String?) {
         if link != " ", link != nil {
-            guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(link!)" ) else { return }
+            guard let url = URL(string: "https://image.tmdb.org/t/p/w200\(link!)" ) else { return }
             DispatchQueue.global().async { [weak self] in
                 if let data = try? Data(contentsOf: url) {
                     if let image = UIImage(data: data) {

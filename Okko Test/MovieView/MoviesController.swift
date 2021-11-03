@@ -13,6 +13,7 @@ enum MoviesControllerAction {
     case getGenres
     case getNameOfGenres(id: Int)
     case goToInfo(idMovie: Int)
+    case addSection(id: Int)
 }
 
 protocol MoviesControllerProtocol {
@@ -20,21 +21,21 @@ protocol MoviesControllerProtocol {
     var network: NetworkProtocol? { get set }
     var creator: CreatorProtocol? { get set }
     var router: RouterProtocol? { get set }
+    var model: ViewModelProtocol? { get set }
     
 
     func action(with: MoviesControllerAction)
-    func getGenres()
-    func getNameOfGenres(id: Int)
-    func goToInfo(idMovie: Int)
+    func getsection() -> [Int]
 }
 
 final class MoviesController: MoviesControllerProtocol {
+    
     var view: MoviesViewProtocol?
     var network: NetworkProtocol?
     var creator: CreatorProtocol?
     var router: RouterProtocol?
+    var model: ViewModelProtocol?
 
-    var genres: [Genre] = [Genre]()
 
     fileprivate let urlGenres = "https://api.themoviedb.org/3/genre/movie/list?api_key=7cbed6f351107536df3dbed1e47b582e"
     fileprivate let urlMovies = "https://api.themoviedb.org/3/discover/movie?api_key=7cbed6f351107536df3dbed1e47b582e&with_genres="
@@ -47,6 +48,8 @@ final class MoviesController: MoviesControllerProtocol {
             getNameOfGenres(id: id)
         case .goToInfo(let idMovie):
             goToInfo(idMovie: idMovie)
+        case .addSection(let id):
+            addSection(id: id)
         }
     }
 }
@@ -55,7 +58,17 @@ final class MoviesController: MoviesControllerProtocol {
 extension MoviesController {
 
     func getNameOfGenres(id: Int) {
-        creator?.action(with: .getNameOfGenres(genres: self.genres, id: id))
+        guard let genres = model?.getGenres() else { return }
+        creator?.action(with: .getNameOfGenres(genres: genres, id: id))
+    }
+
+    func getsection() -> [Int] {
+        guard let sections = model?.getSections() else { return [0] }
+        return sections
+    }
+
+    func addSection(id: Int) {
+        model?.action(with: .addNewSection(id: id))
     }
 
     func getGenres() {
@@ -63,7 +76,7 @@ extension MoviesController {
             switch result {
                 
             case .success(let request):
-                self.genres = request.genres
+                self.model?.action(with: .updateGenres(new: request.genres))
 
                 for genre in request.genres {
                     self.view?.action(with: .createSect(id: genre.id))

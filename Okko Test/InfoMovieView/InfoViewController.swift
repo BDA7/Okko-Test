@@ -24,6 +24,7 @@ final class InfoViewController: UIViewController, InfoViewProtocol {
     lazy var imageOfMovie: UIImageView = {
         let image = UIImageView()
         image.backgroundColor = .black
+        image.layer.cornerRadius = 5
         return image
     }()
 
@@ -97,7 +98,7 @@ extension InfoViewController {
             make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.6)
+            make.bottom.equalToSuperview().inset(view.bounds.height/1.8)
         }
     }
     func setupTitile() {
@@ -106,7 +107,7 @@ extension InfoViewController {
             make.top.equalTo(imageOfMovie.snp.bottom).inset(-1)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.8)
+            make.bottom.equalToSuperview().inset(view.bounds.height/2.0)
         }
     }
 
@@ -116,7 +117,7 @@ extension InfoViewController {
             make.top.equalTo(titleMovie.snp.bottom)
             make.left.equalToSuperview()
             make.right.equalToSuperview().inset(view.bounds.width/1.6)
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.9)
+            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
         }
     }
 
@@ -126,7 +127,7 @@ extension InfoViewController {
             make.top.equalTo(titleMovie.snp.bottom)
             make.left.equalTo(year.snp.right)
             make.right.equalToSuperview().inset(view.bounds.width/3)
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.9)
+            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
         }
     }
 
@@ -136,7 +137,7 @@ extension InfoViewController {
             make.top.equalTo(titleMovie.snp.bottom)
             make.left.equalTo(lang.snp.right)
             make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.9)
+            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
         }
     }
 

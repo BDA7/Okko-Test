@@ -28,8 +28,6 @@ final class MoviesViewController: UIViewController, MoviesViewProtocol {
 
     var controller: MoviesControllerProtocol?
 
-    var sc: [Int] = [Int]()
-
     var headetTitle: String?
 
 
@@ -53,7 +51,7 @@ final class MoviesViewController: UIViewController, MoviesViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "MOVIES"
-        controller?.getGenres()
+        controller?.action(with: .getGenres)
         view.backgroundColor = .purple
         setupCollection()
     }
@@ -96,8 +94,8 @@ extension MoviesViewController {
         
         
         let layoutGroupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.7),
-            heightDimension: .absolute(view.bounds.height/5))
+            widthDimension: .fractionalWidth(0.6),
+            heightDimension: .absolute(view.bounds.height/4.5))
         let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
@@ -111,27 +109,27 @@ extension MoviesViewController {
     }
 
     func setupListLayout() -> NSCollectionLayoutSection {
-          let itemSize = NSCollectionLayoutSize(
+        let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0))
-          let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         item.contentInsets = .init(top: 5, leading: 2, bottom: 0, trailing: 2)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalWidth(1/3))
         let group = NSCollectionLayoutGroup.horizontal(
-          layoutSize: groupSize,
-          subitem: item,
-          count: 1)
+            layoutSize: groupSize,
+            subitem: item,
+            count: 1)
 
-          let section = NSCollectionLayoutSection(group: group)
+        let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets.init(top: 5, leading: 5, bottom: 15, trailing: 5)
 
         let header = createSectionHeader()
         section.boundarySupplementaryItems = [header]
 
-          return section
+        return section
     }
 
     func setupGridLayout() -> NSCollectionLayoutSection {
@@ -160,7 +158,7 @@ extension MoviesViewController {
 extension MoviesViewController {
 
     func createSect(id: Int) {
-        sc.append(id)
+        controller?.action(with: .addSection(id: id))
         snapshot.appendSections([id])
         dataSource?.apply(snapshot)
     }
@@ -176,7 +174,7 @@ extension MoviesViewController {
 extension MoviesViewController {
     func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            let section = self.sc[sectionIndex]
+            let section = self.controller?.getsection()[sectionIndex]
             
             switch section {
             case 28, 878, 27:
@@ -228,8 +226,9 @@ extension MoviesViewController {
         dataSource?.supplementaryViewProvider = {
                     collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else { return nil }
+            guard let id = self.controller?.getsection()[indexPath.section] else { return nil }
 
-            self.controller?.action(with: .getNameOfGenres(id: self.sc[indexPath.section]))
+            self.controller?.action(with: .getNameOfGenres(id: id))
             let num = self.headetTitle
 
             sectionHeader.title.text = num
@@ -246,7 +245,7 @@ extension MoviesViewController {
 //MARK: - Jump to info of movie
 extension MoviesViewController {
     func tapCell(id: Int) {
-        controller?.goToInfo(idMovie: id)
+        controller?.action(with: .goToInfo(idMovie: id))
     }
 }
 

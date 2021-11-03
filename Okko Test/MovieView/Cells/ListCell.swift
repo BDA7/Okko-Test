@@ -24,6 +24,7 @@ class ListCell: UICollectionViewCell {
 
     lazy var imageOfMovie: UIImageView = {
         let image = UIImageView()
+        image.contentMode = .scaleToFill
         return image
     }()
 
@@ -72,7 +73,7 @@ class ListCell: UICollectionViewCell {
         nameOfMovie.snp.makeConstraints { make in
             make.top.equalTo(contentView)
             make.bottom.equalTo(contentView)
-            make.left.equalTo(imageOfMovie.snp.right).inset(-3)
+            make.left.equalTo(imageOfMovie.snp.right)
             make.right.equalTo(contentView)
         }
     }

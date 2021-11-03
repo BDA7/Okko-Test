@@ -15,6 +15,7 @@
 		FE1E7D352732015200554933 /* InfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E7D342732015100554933 /* InfoController.swift */; };
 		FE1E7D37273201B800554933 /* InfoModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E7D36273201B800554933 /* InfoModule.swift */; };
 		FE1E7D3927320EA800554933 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E7D3827320EA800554933 /* Router.swift */; };
+		FE1E7D3D2732D3C200554933 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1E7D3C2732D3C200554933 /* ViewModel.swift */; };
 		FEC07388273156F70006EB74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC07387273156F70006EB74 /* AppDelegate.swift */; };
 		FEC0738A273156F70006EB74 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC07389273156F70006EB74 /* SceneDelegate.swift */; };
 		FEC0738C273156F70006EB74 /* MoivesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC0738B273156F70006EB74 /* MoivesViewController.swift */; };
@@ -39,6 +40,7 @@
 		FE1E7D342732015100554933 /* InfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoController.swift; sourceTree = "<group>"; };
 		FE1E7D36273201B800554933 /* InfoModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoModule.swift; sourceTree = "<group>"; };
 		FE1E7D3827320EA800554933 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		FE1E7D3C2732D3C200554933 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		FEC07384273156F70006EB74 /* Okko Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Okko Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEC07387273156F70006EB74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FEC07389273156F70006EB74 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				FEC073A1273159B50006EB74 /* MoviesController.swift */,
 				FE1E7D2B2731E2F100554933 /* Creator.swift */,
 				FE1E7D3827320EA800554933 /* Router.swift */,
+				FE1E7D3C2732D3C200554933 /* ViewModel.swift */,
 			);
 			path = MovieView;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				FE1E7D302731FA6E00554933 /* GridCell.swift in Sources */,
 				FEC07388273156F70006EB74 /* AppDelegate.swift in Sources */,
 				FE1E7D2E2731E6BE00554933 /* SectionHeader.swift in Sources */,
+				FE1E7D3D2732D3C200554933 /* ViewModel.swift in Sources */,
 				FE1E7D3927320EA800554933 /* Router.swift in Sources */,
 				FE1E7D332732012600554933 /* InfoViewController.swift in Sources */,
 				FEC073A0273158B70006EB74 /* ModuleMovie.swift in Sources */,

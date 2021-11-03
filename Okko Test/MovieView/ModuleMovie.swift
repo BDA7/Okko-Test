@@ -14,12 +14,14 @@ final class ModuleMovie {
         let network = Network()
         let creator = Creator()
         let router = Router()
+        let model = ViewModel()
 
         view.controller = controller
         controller.view = view
         controller.network = network
         controller.creator = creator
         controller.router = router
+        controller.model = model
         creator.view = view
         router.transitionHandler = view
 

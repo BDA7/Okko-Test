@@ -24,6 +24,7 @@ class GridCell: UICollectionViewCell {
 
     lazy var imageOfMovie: UIImageView = {
         let image = UIImageView()
+        image.contentMode = .scaleToFill
         return image
     }()
 
