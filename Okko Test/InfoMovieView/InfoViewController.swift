@@ -13,152 +13,89 @@ protocol InfoViewProtocol {
     var controller: InfoControllerProtocol? { get set }
 
     func configure(movie: Movie)
+    func setupTable()
 }
 
-final class InfoViewController: UIViewController, InfoViewProtocol {
+final class InfoViewController: UIViewController, InfoViewProtocol, UITableViewDelegate, UITableViewDataSource {
 
     var id: Int = 0
 
     var controller: InfoControllerProtocol?
 
-    lazy var imageOfMovie: UIImageView = {
-        let image = UIImageView()
-        image.backgroundColor = .black
-        image.layer.cornerRadius = 5
-        return image
-    }()
+    var movie: Movie?
 
-    lazy var titleMovie: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 26)
-        label.text = "TITLE"
-        label.textAlignment = .center
-        label.textColor = .white
-        return label
-    }()
-
-    lazy var year: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 18)
-        label.textAlignment = .center
-        label.textColor = .white
-        return label
-    }()
-
-    lazy var lang: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 18)
-        label.textAlignment = .center
-        label.textColor = .white
-        return label
-    }()
-
-    lazy var voite: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 18)
-        label.textAlignment = .center
-        label.textColor = .white
-        return label
-    }()
-
-    lazy var descript: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Arial", size: 18)
-        label.textAlignment = .center
-        label.textColor = .white
-        label.numberOfLines = 0
-        return label
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(InfoTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(InfoTableViewCell.self))
+        tableView.register(TextInfoTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(TextInfoTableViewCell.self))
+        tableView.delegate = self
+        tableView.dataSource = self
+        return tableView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
-        setups()
         controller?.getMovieDeitals(id: id)
 
     }
 }
 
-//MARK: - SubViews setup and configugre
+//MARK: - Setup TableView Info of movie
 extension InfoViewController {
 
-    func setups() {
-        setupNavController()
-        setupImage()
-        setupTitile()
-        setupYear()
-        setupLang()
-        setupVoite()
-        setupDescription()
-    }
-
-    func setupImage() {
-        view.addSubview(imageOfMovie)
-        imageOfMovie.snp.makeConstraints { make in
+    func setupTable() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/1.8)
-        }
-    }
-    func setupTitile() {
-        view.addSubview(titleMovie)
-        titleMovie.snp.makeConstraints { make in
-            make.top.equalTo(imageOfMovie.snp.bottom).inset(-1)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/2.0)
-        }
-    }
-
-    func setupYear() {
-        view.addSubview(year)
-        year.snp.makeConstraints { make in
-            make.top.equalTo(titleMovie.snp.bottom)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview().inset(view.bounds.width/1.6)
-            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
-        }
-    }
-
-    func setupLang() {
-        view.addSubview(lang)
-        lang.snp.makeConstraints { make in
-            make.top.equalTo(titleMovie.snp.bottom)
-            make.left.equalTo(year.snp.right)
-            make.right.equalToSuperview().inset(view.bounds.width/3)
-            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
-        }
-    }
-
-    func setupVoite() {
-        view.addSubview(voite)
-        voite.snp.makeConstraints { make in
-            make.top.equalTo(titleMovie.snp.bottom)
-            make.left.equalTo(lang.snp.right)
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.bounds.height/2.1)
-        }
-    }
-
-    func setupDescription() {
-        view.addSubview(descript)
-        descript.snp.makeConstraints { make in
-            make.top.equalTo(lang.snp.bottom)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        self.tableView.backgroundColor = .purple
+        self.tableView.separatorColor = .clear
     }
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(InfoTableViewCell.self), for: indexPath) as! InfoTableViewCell
+            cell.configure(image: movie?.poster_path ?? " ")
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(TextInfoTableViewCell.self), for: indexPath) as! TextInfoTableViewCell
+            cell.configure(text: movie?.original_title ?? "none", style: .title)
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(TextInfoTableViewCell.self), for: indexPath) as! TextInfoTableViewCell
+            cell.configure(text: "DESCRIPTION: \n\(movie?.overview ?? "none")", style: .normal)
+            return cell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(TextInfoTableViewCell.self), for: indexPath) as! TextInfoTableViewCell
+            let str = "DATE: \(movie?.release_date ?? "0") . LANG: \(movie?.original_language ?? "en") . VOITE: \((movie?.vote_average)!)"
+
+            cell.configure(text: str, style: .description)
+            return cell
+        }
+}
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return view.bounds.height/1.5
+        case 3:
+            return view.bounds.height/5
+        default:
+            return view.bounds.height/20
+        }
+    }
     func configure(movie: Movie) {
         title = movie.original_title
-        titleMovie.text = movie.original_title
-        year.text = movie.release_date
-        lang.text = movie.original_language
-        voite.text = "\(movie.vote_average)"
-        descript.text = movie.overview
-        imageOfMovie.load(link: movie.poster_path)
+        self.movie = movie
     }
 }
 //MARK: - NavBar Settings

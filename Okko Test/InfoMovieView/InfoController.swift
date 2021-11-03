@@ -28,6 +28,7 @@ extension InfoController {
                 
             case .success(let request):
                 self.view?.configure(movie: request)
+                self.view?.setupTable()
             case .failure(let error):
                 print("Error: \(error)")
             }

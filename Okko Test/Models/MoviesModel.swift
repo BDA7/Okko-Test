@@ -15,8 +15,8 @@ struct MoviesModel: Decodable, Hashable {
 }
 
 struct Movie: Decodable, Hashable {
-    var genre_ids: [Int]?
     var id: Int
+    var genre_ids: [Int]?
     var original_language: String
     var original_title: String
     var overview: String
