@@ -72,6 +72,16 @@ final class InfoViewController: UIViewController, InfoViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .purple
+        setups()
+        controller?.getMovieDeitals(id: id)
+
+    }
+}
+
+//MARK: - SubViews setup and configugre
+extension InfoViewController {
+
+    func setups() {
         setupNavController()
         setupImage()
         setupTitile()
@@ -79,12 +89,8 @@ final class InfoViewController: UIViewController, InfoViewProtocol {
         setupLang()
         setupVoite()
         setupDescription()
-        controller?.getMovieDeitals(id: id)
-
     }
-}
 
-extension InfoViewController {
     func setupImage() {
         view.addSubview(imageOfMovie)
         imageOfMovie.snp.makeConstraints { make in
@@ -154,7 +160,7 @@ extension InfoViewController {
         imageOfMovie.load(link: movie.poster_path)
     }
 }
-
+//MARK: - NavBar Settings
 extension InfoViewController {
     func setupNavController() {
         navigationController?.navigationBar.isHidden = false

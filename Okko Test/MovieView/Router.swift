@@ -18,6 +18,7 @@ final class Router: RouterProtocol {
     var transitionHandler: UIViewController?
 }
 
+//MARK: - Jump to InfoMovieView
 extension Router {
     func goToInfoView(id: Int) {
         let info = InfoModule.build(id: id)

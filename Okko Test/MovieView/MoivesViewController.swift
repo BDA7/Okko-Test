@@ -8,16 +8,20 @@
 import UIKit
 import SnapKit
 
+//Actions
+enum MoviesViewAction {
+    case moviesForGenreAdd(mov: [Movie], id: Int)
+    case createSect(id: Int)
+    case createDataSource
+    case setupHeaders
+    case updateTitleHeader(newTitle: String)
+    case tapCell(id: Int)
+}
 
 protocol MoviesViewProtocol {
     var controller: MoviesControllerProtocol? { get set }
 
-    func moviesForGenreAdd(mov: [Movie], id: Int)
-    func createSect(id: Int)
-    func createDataSource()
-    func setupHeaders()
-    func tapCell(id: Int)
-
+    func action(with: MoviesViewAction)
 }
 
 final class MoviesViewController: UIViewController, MoviesViewProtocol {
@@ -26,9 +30,13 @@ final class MoviesViewController: UIViewController, MoviesViewProtocol {
 
     var sc: [Int] = [Int]()
 
+    var headetTitle: String?
+
+
     var dataSource: UICollectionViewDiffableDataSource<Int, Movie>?
 
     var snapshot = NSDiffableDataSourceSnapshot<Int, Movie>()
+
 
     lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createCompositionalLayout())
@@ -39,7 +47,6 @@ final class MoviesViewController: UIViewController, MoviesViewProtocol {
 
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
 
-        collectionView.backgroundColor = .purple
         return collectionView
     }()
 
@@ -50,24 +57,42 @@ final class MoviesViewController: UIViewController, MoviesViewProtocol {
         setupCollection()
     }
 
+    func action(with: MoviesViewAction) {
+        switch with {
+        case .moviesForGenreAdd(let mov, let id):
+            moviesForGenreAdd(mov: mov, id: id)
+        case .createSect(let id):
+            createSect(id: id)
+        case .createDataSource:
+            createDataSource()
+        case .setupHeaders:
+            setupHeaders()
+        case .tapCell(let id):
+            tapCell(id: id)
+        case .updateTitleHeader(let newTitle):
+            updateTitleHeader(newTitle: newTitle)
+        }
+    }
+
 }
 
+//MARK: Setup CollectionView
 extension MoviesViewController {
     func setupCollection() {
         view.addSubview(collectionView)
+        collectionView.backgroundColor = .purple
     }
 }
 
+//MARK: - Layout types
 extension MoviesViewController {
     func setupLAyout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                              heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
         layoutItem.contentInsets = NSDirectionalEdgeInsets.init(top: 0, leading: 8, bottom: 0, trailing: 8)
         
         
-        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.7),
-                                                     heightDimension: .absolute(view.bounds.height/5))
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.7), heightDimension: .absolute(view.bounds.height/5))
         let layoutGroup = NSCollectionLayoutGroup.horizontal(layoutSize: layoutGroupSize, subitems: [layoutItem])
         
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
@@ -85,14 +110,14 @@ extension MoviesViewController {
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0))
           let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(
-          widthDimension: .fractionalWidth(1.0),
-          heightDimension: .fractionalWidth(1/3))
         item.contentInsets = .init(top: 5, leading: 2, bottom: 0, trailing: 2)
+
+        let groupSize = NSCollectionLayoutSize( widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(1/3))
         let group = NSCollectionLayoutGroup.horizontal(
           layoutSize: groupSize,
           subitem: item,
           count: 1)
+
           let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets.init(top: 5, leading: 5, bottom: 15, trailing: 5)
 
@@ -103,16 +128,11 @@ extension MoviesViewController {
     }
 
     func setupGridLayout() -> NSCollectionLayoutSection {
-        let spacing: CGFloat = 1
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
-            heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: spacing, leading: spacing, bottom: spacing, trailing: spacing)
+        item.contentInsets = .init(top: 5, leading: 2, bottom: 0, trailing: 2)
 
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.5))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.5))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
@@ -125,6 +145,7 @@ extension MoviesViewController {
     }
 }
 
+//MARK: - Append sections and Movies
 extension MoviesViewController {
 
     func createSect(id: Int) {
@@ -140,6 +161,7 @@ extension MoviesViewController {
 
 }
 
+//MARK: - Create layouts and Datasource
 extension MoviesViewController {
     func createCompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
@@ -182,15 +204,24 @@ extension MoviesViewController {
         })
     }
 
+}
+
+//MARK: - Headers Settings
+extension MoviesViewController {
+
+    func updateTitleHeader(newTitle: String) {
+        self.headetTitle = newTitle
+    }
 
     func setupHeaders() {
         dataSource?.supplementaryViewProvider = {
                     collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SectionHeader else { return nil }
-            let numberOfSection = self.controller?.getNameOfGenres(id: self.sc[indexPath.section])
+            self.controller?.action(with: .getNameOfGenres(id: self.sc[indexPath.section]))
+            let num = self.headetTitle
             
             
-            sectionHeader.title.text = numberOfSection
+            sectionHeader.title.text = num
             return sectionHeader
         }
     }
@@ -200,9 +231,8 @@ extension MoviesViewController {
         let layoutSectionHeader = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: layoutSectionHEaderSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         return layoutSectionHeader
     }
-
 }
-
+//MARK: - Jump to info of movie
 extension MoviesViewController {
     func tapCell(id: Int) {
         controller?.goToInfo(idMovie: id)

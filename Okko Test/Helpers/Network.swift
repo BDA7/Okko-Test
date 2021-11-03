@@ -17,7 +17,9 @@ protocol NetworkProtocol {
     func getMovieDeitals(urlString: String, completion: @escaping (Result<Movie, Error>) -> Void)
 }
 
+//MARK: - work for tmdb
 final class Network: NetworkProtocol {
+// get genres
     func requestGenres(urlString: String, completion: @escaping (Result<GenresModel, Error>) -> Void) {
 
         guard let url = URL(string: urlString) else { return }
@@ -43,7 +45,7 @@ final class Network: NetworkProtocol {
             }
         }.resume()
     }
-
+// get movies
     func requestMovies(urlString: String, completion: @escaping (Result<MoviesModel, Error>) -> Void) {
 
         guard let url = URL(string: urlString) else { return }
@@ -70,7 +72,7 @@ final class Network: NetworkProtocol {
             }
         }.resume()
     }
-
+// Get movie Deitals
     func getMovieDeitals(urlString: String, completion: @escaping (Result<Movie, Error>) -> Void) {
         
         guard let url = URL(string: urlString) else { return }
@@ -98,6 +100,7 @@ final class Network: NetworkProtocol {
     }
 }
 
+//MARK: - load image for movie
 extension UIImageView {
     func load(link: String?) {
         if link != " ", link != nil {

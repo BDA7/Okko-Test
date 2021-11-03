@@ -8,6 +8,7 @@
 import Foundation
 
 
+//MARK: - Model Genres
 struct GenresModel: Decodable, Hashable {
     var genres: [Genre]
 }

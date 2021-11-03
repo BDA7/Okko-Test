@@ -20,6 +20,7 @@ final class InfoController: InfoControllerProtocol {
     var network: NetworkProtocol?
 }
 
+//MARK: - Get Info of movie
 extension InfoController {
     func getMovieDeitals(id: Int) {
         network?.getMovieDeitals(urlString: "https://api.themoviedb.org/3/movie/\(id)?api_key=7cbed6f351107536df3dbed1e47b582e", completion: { (results) in

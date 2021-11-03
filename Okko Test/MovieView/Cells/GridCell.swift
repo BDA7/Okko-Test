@@ -51,10 +51,10 @@ class GridCell: UICollectionViewCell {
     }
 
     @objc func click(_ sender: Any?) {
-        delegate?.tapCell(id: self.id ?? 0)
+        delegate?.action(with: .tapCell(id: self.id ?? 0))
     }
 
-
+//MARK: add subViews and Constraints
     func setupImage() {
         contentView.addSubview(imageOfMovie)
         imageOfMovie.snp.makeConstraints { make in

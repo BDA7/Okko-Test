@@ -8,6 +8,7 @@
 import Foundation
 
 
+//MARK: - Model Movies
 struct MoviesModel: Decodable, Hashable {
     var page: Int
     var results: [Movie]
