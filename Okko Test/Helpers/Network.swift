@@ -19,6 +19,7 @@ protocol NetworkProtocol {
 
 //MARK: - work for tmdb
 final class Network: NetworkProtocol {
+    
 // get genres
     func requestGenres(urlString: String, completion: @escaping (Result<GenresModel, Error>) -> Void) {
 
@@ -28,7 +29,6 @@ final class Network: NetworkProtocol {
             DispatchQueue.main.async {
 
                 if let error = error {
-                    print("Error")
                     completion(.failure(error))
                     return
                 }
@@ -39,7 +39,6 @@ final class Network: NetworkProtocol {
                     let characters = try JSONDecoder().decode(GenresModel.self, from: data)
                     completion(.success(characters))
                 } catch  let jsonError {
-                    print("Faled Decode \(jsonError)")
                     completion(.failure(jsonError))
                 }
             }
@@ -55,7 +54,6 @@ final class Network: NetworkProtocol {
             DispatchQueue.main.async {
 
                 if let error = error {
-                    print("Error")
                     completion(.failure(error))
                     return
                 }
@@ -66,7 +64,6 @@ final class Network: NetworkProtocol {
                     let characters = try JSONDecoder().decode(MoviesModel.self, from: data)
                     completion(.success(characters))
                 } catch  let jsonError {
-                    print("Faled Decode \(jsonError)")
                     completion(.failure(jsonError))
                 }
             }
@@ -81,7 +78,6 @@ final class Network: NetworkProtocol {
             DispatchQueue.main.async {
 
                 if let error = error {
-                    print("Error")
                     completion(.failure(error))
                     return
                 }
@@ -92,12 +88,13 @@ final class Network: NetworkProtocol {
                     let characters = try JSONDecoder().decode(Movie.self, from: data)
                     completion(.success(characters))
                 } catch  let jsonError {
-                    print("Faled Decode \(jsonError)")
                     completion(.failure(jsonError))
                 }
             }
         }.resume()
     }
+
+    
 }
 
 //MARK: - load image for movie

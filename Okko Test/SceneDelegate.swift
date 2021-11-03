@@ -22,6 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         navView.navigationBar.backgroundColor = .purple
         navView.navigationBar.barTintColor = .purple
         navView.navigationBar.tintColor = .white
+        navView.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+
 
         window?.windowScene = windowScene
         self.window!.rootViewController = navView
