@@ -12,8 +12,6 @@ import SnapKit
 protocol MoviesViewProtocol {
     var controller: MoviesControllerProtocol? { get set }
 
-    func setupSections(genres: [Movie])
-    func addMovies(movies: [Movie])
     func moviesForGenreAdd(mov: [Movie], id: Int)
     func createSect(id: Int)
     func createDataSource()
@@ -128,23 +126,6 @@ extension MoviesViewController {
 }
 
 extension MoviesViewController {
-    func setupSections(genres: [Movie]) {
-        for i in genres {
-            if sc.contains(i.genre_ids![0]) == false {
-                sc.append(i.genre_ids![0])
-            }
-        }
-        snapshot.appendSections(sc)
-        dataSource?.apply(snapshot)
-        controller?.toMovies()
-    }
-
-    func addMovies(movies: [Movie]) {
-        for i in movies {
-            snapshot.appendItems([i], toSection: i.genre_ids![0])
-        }
-        dataSource?.apply(snapshot)
-    }
 
     func createSect(id: Int) {
         sc.append(id)

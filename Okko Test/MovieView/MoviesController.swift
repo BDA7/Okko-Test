@@ -14,8 +14,6 @@ protocol MoviesControllerProtocol {
     var creator: CreatorProtocol? { get set }
     var router: RouterProtocol? { get set }
 
-    func toMovies()
-    func getMovies()
     func getGenres()
     func getNameOfGenres(id: Int) -> String
     func goToInfo(idMovie: Int)
@@ -34,38 +32,6 @@ final class MoviesController: MoviesControllerProtocol {
 }
 
 extension MoviesController {
-//    func getGenres() {
-//        network?.requestGenres(urlString: urlGenres, completion: { (results) in
-//            switch results {
-//
-//            case .success(let request):
-//                self.view?.setupSections(genres: request.genres)
-//
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        })
-//    }
-
-    func getMovies() {
-        network?.requestMovies(urlString: "https://api.themoviedb.org/3/movie/popular?api_key=7cbed6f351107536df3dbed1e47b582e", completion: { (results) in
-            switch results {
-                
-            case .success(let request):
-                self.movieAr = request.results
-                self.view?.setupSections(genres: self.movieAr)
-//                self.view?.addMovies(movies: request.results)
-
-            case .failure(let error):
-                print("Error: \(error)")
-            }
-        })
-        view?.createDataSource()
-    }
-
-    func toMovies() {
-        view?.addMovies(movies: movieAr)
-    }
 
     func getNameOfGenres(id: Int) -> String {
         for i in genres {
